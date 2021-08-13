@@ -9,6 +9,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { login } from '@/api/user'
+import customStorage from '@/utils/customStorage'
 export default {
   setup () {
     const store = useStore()
