@@ -2,6 +2,16 @@ import axios from '@/utils/axios.js'
 
 export function fetchBanner () {
   return axios.get('/banner', {
-    type: 1
+    params: {
+      type: 1
+    }
+  })
+}
+
+export function fetchRecommendSongList (limit = 6) {
+  return axios.get('/personalized', {
+    params: {
+      limit
+    }
   })
 }
