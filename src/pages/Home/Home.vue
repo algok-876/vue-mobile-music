@@ -56,21 +56,29 @@
       <section-container
         title="推荐歌单"
       >
-        <swiper
-          :loop="false"
-          :speed="800"
-          :slidesPerView="3.2"
-          :spaceBetween="10"
-        >
-          <swiper-slide v-for="songList in recommendSongList" :key="songList.id" class="swiper-item">
-            <div class="song-list-item">
-              <div class="cover">
-                <img :src="songList.picUrl" alt="">
+        <div class="song-list">
+          <swiper
+            :loop="false"
+            :speed="800"
+            :slidesPerView="3.4"
+            :spaceBetween="10"
+            :slidesOffsetBefore="16"
+            class="swiper-song-list"
+          >
+            <swiper-slide v-for="songList in recommendSongList" :key="songList.id" class="swiper-item">
+              <div class="song-list-item">
+                <div class="cover">
+                  <img :src="songList.picUrl" alt="">
+                  <div class="play-count">
+                    <i class="iconfont icon-bofang"></i>
+                    <span>{{ playCount(songList.playCount) }}</span>
+                  </div>
+                </div>
+                <p class="name">{{ songList.name }}</p>
               </div>
-              <p class="name">{{ songList.name }}</p>
-            </div>
-          </swiper-slide>
-        </swiper>
+            </swiper-slide>
+          </swiper>
+        </div>
       </section-container>
       
     </main>
@@ -78,9 +86,10 @@
 </template>
 
 <script>
-import { computed, reactive, toRefs } from 'vue'
+import { computed, reactive, ref, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { getBanner, getSongList } from './data'
+import { playCount } from '@/utils/tools'
 import SectionContainer from '@/components/SectionContainer.vue'
 import SwiperCore, {Autoplay,Pagination} from 'swiper';
 import {Swiper,SwiperSlide} from 'swiper/vue';
@@ -101,9 +110,9 @@ export default {
     }
 
     loadData()
-
     return {
       ...toRefs(state),
+      playCount
     }
   },
   components: {
@@ -188,19 +197,57 @@ export default {
     }
   }
 }
+.song-list{
+  .swiper-song-list{
+    padding-top: 20px;
+  }
+}
 .song-list-item{
   .cover{
-    border-radius: 15px;
-    overflow: hidden;
+    position: relative;
+    &::after{
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: -20px;
+      left: 0;
+      z-index: -1;
+      border-radius: 17px;
+      background-color: rgb(241,242,235);
+      transform: scale(0.9);
+    }
     img{
       display: block;
       width: 100%;
+      border-radius: 15px;
+    }
+    .play-count{
+      position: absolute;
+      display: flex;
+      align-items: center;
+      right: 10px;
+      top: 10px;
+      height: 42px;
+      padding: 0 16px;
+      border-radius: 21px;
+      background-color: rgba(0, 0, 0, .2);
+      color: #fff;
+      font-size: 14px;
+      i{
+        font-size: 14px;
+        display: inline-block;
+        margin-right: 5px;
+      }
     }
   }
   .name{
     font-size: 26px;
     text-align: justify;
     margin-top: 8px;
+    height: 68px;
+    overflow: hidden;
   }
 }
+
 </style>

@@ -5,7 +5,7 @@ import store from '@/store'
 import vant from '@/vant'
 import 'swiper/swiper.min.css'
 
-createApp(App)
+const app = createApp(App)
 .use(router)
 .use(store)
 .use(vant)
