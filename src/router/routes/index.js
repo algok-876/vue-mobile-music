@@ -12,6 +12,12 @@ const routes = [
     name: 'Login',
     component: Login
   },
+  {
+    path: '/songlist/:id(\\d+)',
+    name: 'SongList',
+    component: () => import('@/pages/SongList/SongList.vue'),
+    props: true
+  }
 ]
 
 export default routes

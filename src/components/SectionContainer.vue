@@ -38,16 +38,17 @@ export default {
 <style lang="scss" scoped>
 .section-container{
   .s-header{
-    padding: 20px 30px;
+    padding: 15px 15px 0 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     .title{
-      font-size: 32px;
+      font-size: 18px;
+      font-weight: bold;
     }
     .button{
       .more{
-        font-size: 16px;
+        font-size: 12px;
       }
     }
   }

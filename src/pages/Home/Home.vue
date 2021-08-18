@@ -67,13 +67,12 @@
           >
             <swiper-slide v-for="songList in recommendSongList" :key="songList.id" class="swiper-item">
               <div class="song-list-item">
-                <div class="cover">
-                  <img :src="songList.picUrl" alt="">
-                  <div class="play-count">
-                    <i class="iconfont icon-bofang"></i>
-                    <span>{{ playCount(songList.playCount) }}</span>
-                  </div>
-                </div>
+                <thumbnail
+                  :cover-url="songList.picUrl"
+                  :play-count="songList.playCount"
+                  :to="{name: 'SongList', params: {id: songList.id}}"
+                  background-color="#cecece"
+                ></thumbnail>
                 <p class="name">{{ songList.name }}</p>
               </div>
             </swiper-slide>
@@ -89,10 +88,10 @@
 import { computed, reactive, ref, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { getBanner, getSongList } from './data'
-import { playCount } from '@/utils/tools'
 import SectionContainer from '@/components/SectionContainer.vue'
 import SwiperCore, {Autoplay,Pagination} from 'swiper';
 import {Swiper,SwiperSlide} from 'swiper/vue';
+import Thumbnail from '@/components/Thumbnail.vue'
 SwiperCore.use([Autoplay,Pagination]);
 
 export default {
@@ -106,19 +105,18 @@ export default {
     const loadData = async () => {
       state.banners = await getBanner()
       state.recommendSongList = await getSongList()
-      console.log(state.recommendSongList)
     }
 
     loadData()
     return {
-      ...toRefs(state),
-      playCount
+      ...toRefs(state)
     }
   },
   components: {
     SectionContainer,
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    Thumbnail
   }
 }
 </script>
@@ -126,42 +124,42 @@ export default {
 <style lang="scss">
 .header{
   display: flex;
-  height: 100px;
+  height: 40px;
   align-items: center;
   background-color: #f3f3f3;
   .icon-wrapper{
     flex: 1;
     text-align: center;
     i{
-      font-size: 54px;
+      font-size: 28px;
       color: #2e2e2e;
     }
   }
   .search{
     box-sizing: border-box;
     width: 75%;
-    height: 70px;
+    height: 30px;
     background-color: #fff;
-    border-radius: 35px;
-    padding: 0 20px;
+    border-radius: 15px;
+    padding: 0 10px;
     display: flex;
     align-items: center;
     i{
-      font-size: 36px;
+      font-size: 18px;
     }
   }
 }
 .main{
   .gap{
-    margin: 30px;
+    margin: 15px;
   }
   .banner{
     .swiper-banner{
       border-radius: 15px;
       .van-swipe__indicator{
-        width: 28px;
-        height: 8px;
-        border-radius: 4px;
+        width: 16px;
+        height: 4px;
+        border-radius: 2px;
       }
     }
     img{
@@ -173,23 +171,26 @@ export default {
 .tab-menu{
   display: flex;
   justify-content: space-between;
-  margin: 30px 0;
+  // margin: 5px 0;
   .item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     .top{
-      width: 100px;
-      height: 100px;
-      border-radius: 50px;
+      width: 50px;
+      height: 50px;
+      border-radius: 25px;
       background-color: rgb(255,240,236);
       display: flex;
       align-items: center;
       justify-content: center;
       i{
         color: rgb(245,63,62);
-        font-size: 38px;
+        font-size: 24px;
       }
     }
     span{
-      font-size: 26px;
+      font-size: 14px;
       letter-spacing: 1px;
       display: block;
       margin-top: 10px;
@@ -203,49 +204,11 @@ export default {
   }
 }
 .song-list-item{
-  .cover{
-    position: relative;
-    &::after{
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: -20px;
-      left: 0;
-      z-index: -1;
-      border-radius: 17px;
-      background-color: rgb(241,242,235);
-      transform: scale(0.9);
-    }
-    img{
-      display: block;
-      width: 100%;
-      border-radius: 15px;
-    }
-    .play-count{
-      position: absolute;
-      display: flex;
-      align-items: center;
-      right: 10px;
-      top: 10px;
-      height: 42px;
-      padding: 0 16px;
-      border-radius: 21px;
-      background-color: rgba(0, 0, 0, .2);
-      color: #fff;
-      font-size: 14px;
-      i{
-        font-size: 14px;
-        display: inline-block;
-        margin-right: 5px;
-      }
-    }
-  }
   .name{
-    font-size: 26px;
+    font-size: 14px;
     text-align: justify;
     margin-top: 8px;
-    height: 68px;
+    height: 38px;
     overflow: hidden;
   }
 }

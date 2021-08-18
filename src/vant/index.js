@@ -2,14 +2,16 @@ import {
   Button,
   Icon,
   Swipe,
-  SwipeItem
+  SwipeItem,
+  NavBar
 } from 'vant'
 
 const components = [
   Button,
   Icon,
   Swipe,
-  SwipeItem
+  SwipeItem,
+  NavBar
 ]
 
 export default function (app) {
