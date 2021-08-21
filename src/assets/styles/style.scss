@@ -4,7 +4,9 @@
   background-color: rgb(105, 105, 105);
   position: absolute;
   top: 0;
-  animation: wave .8s ease-in-out;
+  opacity: .4;
+  // animation: wave .8s ease-out;
+  transition: all .8s ease-out;
 }
 @keyframes wave{
   0% {

@@ -3,7 +3,7 @@
     <header>
       <van-nav-bar title="歌单" :fixed="true">
         <template #left>
-          <div class="return">
+          <div class="return" @click="$router.back()">
             <i class="iconfont icon-xia"></i>
             <span>返回</span>
           </div>
@@ -14,47 +14,68 @@
           </div>
         </template>
       </van-nav-bar>
+      <div class="placeholder"></div>
     </header>
-    <section class="song-list-detail" v-if="songlist">
-      <thumbnail
-        :cover-url="songlist.coverImgUrl"
-        :play-count="songlist.playCount"
-      ></thumbnail>
-      <div class="content">
-        <p class="name">{{songlist.name}}</p>
-        <p class="creator">
-          <div class="img">
-            <img :src="songlist.creator.avatarUrl" alt="" />
+    <van-skeleton
+      title
+      avatar
+      avatar-shape="square"
+      title-width="90%"
+      :row="3"
+      :loading="!songlist"
+      :avatar-size="120"
+      :row-width="['100%', '70%', '100%']"
+      :round="true"
+    >
+      <section class="song-list-detail">
+        <thumbnail
+          :cover-url="songlist.coverImgUrl"
+          :play-count="songlist.playCount"
+        ></thumbnail>
+        <div class="content">
+          <p class="name">{{songlist.name}}</p>
+          <p class="creator">
+            <div class="img">
+              <img :src="songlist.creator.avatarUrl" alt="" />
+            </div>
+            <span>{{songlist.creator.nickname}}</span>
+          </p>
+          <p class="description" v-wave="'slow'">
+            <span class="van-ellipsis">{{songlist.description}}</span>
+            <van-icon name="arrow" />
+          </p>
+        </div>
+        <div class="tab">
+          <div class="item">
+            <i class="iconfont icon-jiatianjiakuangxuanduoxuan-8"></i>
+            <span>{{figurePlayCount(songlist.subscribedCount)}}</span>
           </div>
-          <span>{{songlist.creator.nickname}}</span>
-        </p>
-        <p class="description" v-wave>
-          <span class="van-ellipsis">{{songlist.description}}</span>
-          <van-icon name="arrow" />
-        </p>
-      </div>
-      <div class="tab">
-        <div class="item">
-          <i class="iconfont icon-jiatianjiakuangxuanduoxuan-8"></i>
-          <span>{{figurePlayCount(songlist.subscribedCount)}}</span>
+          <div class="item">
+            <i class="iconfont icon-pinglun"></i>
+            <span>{{songlist.commentCount}}</span>
+          </div>
+          <div class="item">
+            <i class="iconfont icon-fenxiang"></i>
+            <span>{{songlist.shareCount}}</span>
+          </div>
         </div>
-        <div class="item">
-          <i class="iconfont icon-pinglun"></i>
-          <span>{{songlist.commentCount}}</span>
-        </div>
-        <div class="item">
-          <i class="iconfont icon-fenxiang"></i>
-          <span>{{songlist.shareCount}}</span>
-        </div>
-      </div>
-    </section>
+      </section>
+    </van-skeleton>
     <section class="songs">
       <div class="top">
         <i class="iconfont icon-bofang"></i>
         <span class="title">播放全部</span>
         <span class="count">({{ songs.length }})</span>
       </div>
-      <ul class="list">
+      <van-loading
+        size="1.1rem"
+        color="#a8a8a8"
+        type="spinner"
+        vertical
+        v-if="!songs.length"
+        style="margin-top: 2rem"
+      >好音乐马上来</van-loading>
+      <ul class="list" v-else>
         <li v-for="(song, index) in songs" :key="song.id" v-wave>
           <div class="song-item">
             <div class="left">
@@ -76,7 +97,7 @@
 </template>
 
 <script>
-import { getSongListDetails } from './data'
+import { fetchSongListDetail, fetchSongDetail } from '@/api/songlist'
 import { onMounted, reactive, toRefs } from 'vue'
 import Thumbnail from '@/components/Thumbnail.vue'
 import { figurePlayCount } from '@/utils/tools'
@@ -97,13 +118,11 @@ export default {
 
     onMounted(async () => {
       // 获取歌单和歌曲数据
-      // const { songlist, songs } = await getSongListDetails(props.id)
-   /*    localStorage.setItem('songlist', JSON.stringify(songlist))
-      localStorage.setItem('songs', JSON.stringify(songs)) */
-      /* state.songlist = songlist
-      state.songs = songs */
-      state.songlist = JSON.parse(localStorage.getItem('songlist'))
-      state.songs = JSON.parse(localStorage.getItem('songs'))
+      const songListDetail = await fetchSongListDetail(props.id)
+      state.songlist = songListDetail.playlist
+      const trackIds = songListDetail.playlist.trackIds.map((track) => track.id)
+      const songDetails = await fetchSongDetail(trackIds.join(','))
+      state.songs = songDetails.songs
     })
 
     return {
@@ -120,6 +139,7 @@ export default {
 <style lang="scss">
 .song-list{
   header{
+    position: relative;
     .return {
       display: flex;
       align-items: center;
@@ -137,12 +157,14 @@ export default {
         font-size: 22px;
       }
     }
+    .placeholder{
+      height: 61px;
+    }
   }
 
   .song-list-detail{
     display: flex;
-    padding: 20px 20px 40px;
-    margin-top: 46px;
+    padding: 0 20px 40px;
     position: relative;
     // border-bottom: 1px solid #f2f2f2;
     .content{

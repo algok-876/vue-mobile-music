@@ -3,7 +3,9 @@ import {
   Icon,
   Swipe,
   SwipeItem,
-  NavBar
+  NavBar,
+  Skeleton,
+  Loading
 } from 'vant'
 
 const components = [
@@ -11,7 +13,9 @@ const components = [
   Icon,
   Swipe,
   SwipeItem,
-  NavBar
+  NavBar,
+  Skeleton,
+  Loading
 ]
 
 export default function (app) {
