@@ -124,7 +124,7 @@ export default {
 <style lang="scss">
 .header{
   display: flex;
-  height: 40px;
+  height: 45px;
   align-items: center;
   background-color: #f3f3f3;
   .icon-wrapper{
