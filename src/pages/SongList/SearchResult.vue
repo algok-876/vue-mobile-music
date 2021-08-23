@@ -38,9 +38,26 @@ export default {
       const pattern = searchWord.split('').join('|')
       const reg = new RegExp(pattern, 'g')
       // 筛选符合条件的歌曲
-      state.filterSongs = songs.filter(song => {
-        return reg.test(song.name) || reg.test(song.singer) || reg.test(song.album)
+      const filterSongsIds = []
+      songs.forEach(song =>  {
+        if (song.name.includes(searchWord) || song.singer.includes(searchWord) || song.album.includes(searchWord)) {
+          filterSongsIds.push(song.id)
+        }
       })
+      songs.forEach(song =>  {
+        if (reg.test(song.name) || reg.test(song.singer) || reg.test(song.album)) {
+          filterSongsIds.push(song.id)
+        }
+      })
+      const filterSongs = []
+      filterSongsIds.forEach(id => {
+        songs.forEach(song => {
+          if (id === song.id) {
+            filterSongs.push(song)
+          }
+        })
+      })
+      state.filterSongs = filterSongs
     })
 
     return {
