@@ -30,8 +30,8 @@ export default {
 
     // 监听搜索关键字的变化
     watch(() => props.searchWord, (searchWord) => {
+      state.filterSongs = []
       if (searchWord === '') {
-        state.filterSongs = []
         return
       }
       const songs = store.getters['songlist/currentSongs']
@@ -46,7 +46,10 @@ export default {
       })
       songs.forEach(song =>  {
         if (reg.test(song.name) || reg.test(song.singer) || reg.test(song.album)) {
-          filterSongsIds.push(song.id)
+          // 排除上一次已经筛选过的歌曲
+          if (filterSongsIds.indexOf(song.id) < 0) {
+            filterSongsIds.push(song.id)
+          }
         }
       })
       const filterSongs = []

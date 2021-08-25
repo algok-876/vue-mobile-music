@@ -19,7 +19,7 @@
         :row-width="['100%', '70%', '100%']"
         :round="true"
       >
-        <section class="song-list-detail">
+        <section class="song-list-detail" v-if="songlist.creator.avatarUrl">
           <thumbnail
             :cover-url="songlist.coverImgUrl"
             :play-count="songlist.playCount"
@@ -32,7 +32,7 @@
               </div>
               <span>{{songlist.creator.nickname}}</span>
             </p>
-            <p class="description" v-wave="'slow'">
+            <p class="description" v-wave="'slow'" @click="panelVisible = true">
               <span class="van-ellipsis">{{songlist.description}}</span>
               <van-icon name="arrow" />
             </p>
@@ -79,6 +79,18 @@
         </ul>
       </section>
     </template>
+
+    <transition name="van-fade">
+      <detail-panel
+        v-if="panelVisible"
+        @close="panelVisible = false"
+        :cover-url="songlist.coverImgUrl"
+        :name="songlist.name"
+        :tags="songlist.tags"
+        :description="songlist.description"
+      >
+      </detail-panel>
+    </transition>
   </div>
 </template>
 
@@ -89,6 +101,7 @@ import Thumbnail from '@/components/Thumbnail.vue'
 import SongItem from '@/components/SongItem.vue'
 import CombineHeader from './CombineHeader.vue'
 import SearchResult from './SearchResult.vue'
+import DetailPanel from './DetailPanel.vue'
 import { figurePlayCount } from '@/utils/tools'
 import { useStore } from 'vuex'
 export default {
@@ -107,10 +120,13 @@ export default {
       songs: [],
       // 搜索状态
       searching: false,
-      searchWord: ''
+      // 搜索关键字
+      searchWord: '',
+      // 面板显示
+      panelVisible: false
     })
 
-    onMounted(async () => {
+    const loadData = async () => {
       // 获取歌单和歌曲数据
       const songListDetail = await fetchSongListDetail(props.id)
       state.songlist = songListDetail.playlist
@@ -118,7 +134,8 @@ export default {
       const songDetails = await fetchSongDetail(trackIds.join(','))
       state.songs = songDetails.songs
       store.commit('songlist/pushCurrentSongs', songDetails.songs)
-    })
+    }
+    loadData()
 
     // 输入搜索关键字时
     const onSearch = (searchWord) => {
@@ -135,7 +152,8 @@ export default {
     Thumbnail,
     SongItem,
     CombineHeader,
-    SearchResult
+    SearchResult,
+    DetailPanel
   }
 }
 </script>
