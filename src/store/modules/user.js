@@ -1,25 +1,63 @@
+import { phoneLogin, loginStatus } from '@/api/user'
+import customStorage from '@/utils/customStorage'
+
 // initial state
 const state = () => ({
-  username: 'wangwei'
+  // 用户信息
+  profile: null,
+  // 帐号信息
+  account: null,
+  // 登录状态
+  logined: false
 })
 
 // getters
 const getters = {
-  /* cartProducts: (state, getters, rootState) => {
-  } */
+  logined: (state) => {
+    return state.logined
+  }
 }
 
 // actions
 const actions = {
-  /* example
-  addProductToCart ({ state, commit }, product) {
-  } */
+  // 用户登录
+  phoneLogin ({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      phoneLogin(params).then(res => {
+        commit('changeProfile', res.profile)
+        commit('changeAccount', res.account)
+        commit('changeLogined', true)
+        customStorage.setItem('cookie', res.cookie)
+        resolve(res)
+      }).catch((error) => {
+        reject(error)
+      })
+    })
+  },
+
+  // 用户登录状态
+  loginStatus ({commit}) {
+    loginStatus().then(res => {
+      if (res.data.account && res.data.profile) {
+        commit('changeProfile', res.data.profile)
+        commit('changeAccount', res.data.account)
+        commit('changeLogined', true)
+      }
+    })
+  }
 }
 
 // mutations
 const mutations = {
-  /* pushProductToCart (state, { id }) {
-  }, */
+  changeProfile (state, profile) {
+    state.profile = profile
+  },
+  changeAccount (state, account) {
+    state.account = account
+  },
+  changeLogined (state, logined) {
+    state.logined = logined
+  }
 }
 
 export default {

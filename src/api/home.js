@@ -1,7 +1,7 @@
-import axios from '@/utils/axios.js'
+import { get, post } from '@/utils/http'
 
 export function fetchBanner () {
-  return axios.get('/banner', {
+  return get('/banner', {
     params: {
       type: 1
     }
@@ -9,9 +9,9 @@ export function fetchBanner () {
 }
 
 export function fetchRecommendSongList (limit = 6) {
-  return axios.get('/personalized', {
+  return get('/personalized', {
     params: {
       limit
     }
-  })
+  }, true)
 }

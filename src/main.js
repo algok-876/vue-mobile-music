@@ -7,6 +7,8 @@ import wave from '@/directive/wave'
 import 'swiper/swiper.min.css'
 import '@/assets/styles/style.scss'
 
+store.dispatch('user/loginStatus')
+
 const app = createApp(App)
 .use(router)
 .use(store)

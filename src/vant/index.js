@@ -5,7 +5,14 @@ import {
   SwipeItem,
   NavBar,
   Skeleton,
-  Loading
+  Loading,
+  Field,
+  CellGroup,
+  Form,
+  PasswordInput,
+  NumberKeyboard,
+  Overlay,
+  CountDown
 } from 'vant'
 
 const components = [
@@ -15,7 +22,14 @@ const components = [
   SwipeItem,
   NavBar,
   Skeleton,
-  Loading
+  Loading,
+  Field,
+  CellGroup,
+  Form,
+  PasswordInput,
+  NumberKeyboard,
+  Overlay,
+  CountDown
 ]
 
 export default function (app) {
