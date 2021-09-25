@@ -40,6 +40,8 @@ const pwdLogin = () => {
   }).then(res => {
     Toast.clear()
     Toast.success('登录成功')
+    localStorage.removeItem('banner')
+    localStorage.removeItem('recommendSongList')
     router.push('/')
   }).catch(error => {
     // 登录失败

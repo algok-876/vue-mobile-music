@@ -23,6 +23,7 @@ const actions = {
   // 用户登录
   phoneLogin ({ commit }, params) {
     return new Promise((resolve, reject) => {
+      console.log(params)
       phoneLogin(params).then(res => {
         commit('changeProfile', res.profile)
         commit('changeAccount', res.account)

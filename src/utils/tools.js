@@ -1,8 +1,11 @@
 export function figurePlayCount (value) {
   value = parseInt(value)
+  if (value > 100000000) {
+    return (value / 100000000).toFixed(2) + '亿'
+  }
   if (value > 10000) {
     return Math.round(value / 10000, 0) + '万'
-  }
+  } 
   return value
 }
 
