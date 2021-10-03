@@ -107,4 +107,8 @@ export default class CustomStorage {
     const data = this.getItem(key)
     this.setItem(key, onChange(data))
   }
+
+  clear () {
+    this.readStorage.clear()
+  }
 }

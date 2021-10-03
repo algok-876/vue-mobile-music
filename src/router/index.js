@@ -10,6 +10,12 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   const logined = store.state.user.logined
+  // 控制tabbar显示与隐藏
+  if (to.meta && to.meta.tabbarVisible) {
+    store.commit('page/changeTabbarVisible', true)
+  } else {
+    store.commit('page/changeTabbarVisible', false)
+  }
   // 限制未登录用户才能进入登录相关页面
   if (to.meta && to.meta.logined === false && logined) {
     return false

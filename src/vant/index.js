@@ -12,7 +12,10 @@ import {
   PasswordInput,
   NumberKeyboard,
   Overlay,
-  CountDown
+  CountDown,
+  Popup,
+  Tabbar,
+  TabbarItem
 } from 'vant'
 
 const components = [
@@ -29,7 +32,10 @@ const components = [
   PasswordInput,
   NumberKeyboard,
   Overlay,
-  CountDown
+  CountDown,
+  Popup,
+  Tabbar,
+  TabbarItem
 ]
 
 export default function (app) {

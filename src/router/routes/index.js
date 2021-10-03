@@ -6,6 +6,9 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+    meta: {
+      tabbarVisible: true
+    }
   },
   {
     path: '/login',
@@ -59,6 +62,30 @@ const routes = [
     name: 'SongList',
     component: () => import('@/pages/SongList/SongList.vue'),
     props: true
+  },
+  {
+    path: '/mine',
+    name: 'Mine',
+    component: () => import('@/pages/Mine/Index.vue'),
+    meta: {
+      tabbarVisible: true
+    }
+  },
+  {
+    path: '/following',
+    name: 'Following',
+    component: () => import('@/pages/Following/Index.vue'),
+    meta: {
+      tabbarVisible: true
+    }
+  },
+  {
+    path: '/cloud-village',
+    name: 'CloudVillage',
+    component: () => import('@/pages/CloudVillage/Index.vue'),
+    meta: {
+      tabbarVisible: true
+    }
   }
 ]
 

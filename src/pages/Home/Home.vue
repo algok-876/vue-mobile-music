@@ -2,7 +2,7 @@
   <div class="home">
     <header class="header">
       <div class="icon-wrapper">
-        <i class="iconfont icon-liebiao"></i>
+        <i class="iconfont icon-liebiao" @click="popupVisible = true"></i>
       </div>
       <div class="search">
         <i class="iconfont icon-sousuo"></i>
@@ -79,8 +79,15 @@
           </swiper>
         </div>
       </section-container>
-      
     </main>
+
+    <van-popup
+      v-model:show="popupVisible"
+      position="left"
+      class="slidebar"
+    >
+      <Slidebar></Slidebar>
+    </van-popup>
   </div>
 </template>
 
@@ -92,6 +99,7 @@ import SectionContainer from '@/components/SectionContainer.vue'
 import SwiperCore, {Autoplay,Pagination} from 'swiper';
 import {Swiper,SwiperSlide} from 'swiper/vue';
 import Thumbnail from '@/components/Thumbnail.vue'
+import Slidebar from '@/components/Slidebar.vue'
 SwiperCore.use([Autoplay,Pagination]);
 
 export default {
@@ -99,7 +107,8 @@ export default {
     const state = reactive({
       banners: [],
       // 推荐歌单
-      recommendSongList: []
+      recommendSongList: [],
+      popupVisible: false
     })
     
     const loadData = async () => {
@@ -116,7 +125,8 @@ export default {
     SectionContainer,
     Swiper,
     SwiperSlide,
-    Thumbnail
+    Thumbnail,
+    Slidebar
   }
 }
 </script>
@@ -211,6 +221,11 @@ export default {
     height: 38px;
     overflow: hidden;
   }
+}
+
+.slidebar{
+  width: 80%;
+  height: 100%;
 }
 
 </style>

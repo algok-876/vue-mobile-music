@@ -45,6 +45,14 @@ const actions = {
         commit('changeLogined', true)
       }
     })
+  },
+
+  // 用户退出登录
+  logout ({commit}) {
+    customStorage.clear()
+    commit('changeProfile', '')
+    commit('changeAccount', '')
+    commit('changeLogined', false)
   }
 }
 
